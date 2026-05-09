@@ -7,7 +7,7 @@ import requestRoutes from "./routes/requestRoutes.js";
 export function createApp() {
   const app = express();
 
-  app.use(cors({ origin: env.corsOrigin }));
+  app.use(cors({ origin: [ env.corsOrigin, "https://medicena-task.vercel.app" ] }));
   app.use(express.json());
 
   app.get("/api/health", (_req, res) => {
