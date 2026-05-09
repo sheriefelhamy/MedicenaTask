@@ -3,6 +3,8 @@ import { PreAuthRequest } from "../models/PreAuthRequest.js";
 const defaultRequests = [
   {
     patient: "Sarah Chen",
+    age: 34,
+    phone: "+20 10 2854 2210",
     insurer: "AXA Egypt Health",
     procedure: "MRI Brain w/ Contrast",
     status: "escalated",
@@ -14,6 +16,8 @@ const defaultRequests = [
   },
   {
     patient: "Michael Rodriguez",
+    age: 59,
+    phone: "+20 12 9174 3301",
     insurer: "MetLife",
     procedure: "Cardiac Catheterization",
     status: "waiting_response",
@@ -25,6 +29,8 @@ const defaultRequests = [
   },
   {
     patient: "Jennifer Williams",
+    age: 67,
+    phone: "+20 11 4456 7822",
     insurer: "NextCare",
     procedure: "Hip Replacement Surgery",
     status: "pending",
@@ -36,6 +42,8 @@ const defaultRequests = [
   },
   {
     patient: "David Park",
+    age: 42,
+    phone: "+20 15 7330 9018",
     insurer: "Egyptian Engineers Syndicate Insurance",
     procedure: "Spine Surgery Consultation",
     status: "escalated",
@@ -47,6 +55,8 @@ const defaultRequests = [
   },
   {
     patient: "Emma Thompson",
+    age: 29,
+    phone: "+20 10 6531 4489",
     insurer: "AXA Egypt Health",
     procedure: "CT Scan Abdomen",
     status: "approved",
@@ -59,6 +69,8 @@ const defaultRequests = [
   },
   {
     patient: "James Anderson",
+    age: 51,
+    phone: "+20 12 1804 6675",
     insurer: "Medicare",
     procedure: "Physical Therapy (12 sessions)",
     status: "waiting_response",

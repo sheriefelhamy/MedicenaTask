@@ -9,6 +9,8 @@ export function serializeRequest(requestDocument) {
   return {
     id: request._id.toString(),
     patient: request.patient,
+    age: request.age,
+    phone: request.phone || "",
     insurer: request.insurer,
     procedure: request.procedure,
     status: request.status,

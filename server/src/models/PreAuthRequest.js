@@ -17,6 +17,8 @@ const timelineSchema = new mongoose.Schema(
 const preAuthRequestSchema = new mongoose.Schema(
   {
     patient: { type: String, required: true, trim: true },
+    age: { type: Number, min: 0 },
+    phone: { type: String, trim: true, default: "" },
     insurer: { type: String, required: true, trim: true },
     procedure: { type: String, required: true, trim: true },
     status: {

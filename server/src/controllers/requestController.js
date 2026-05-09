@@ -32,7 +32,7 @@ export async function getRequestById(req, res, next) {
 
 export async function createRequest(req, res, next) {
   try {
-    const { patient, insurer, procedure, priority, assignedTo, channel } = req.body;
+    const { patient, age, phone, insurer, procedure, priority, assignedTo, channel } = req.body;
 
     if (!patient || !insurer || !procedure || !assignedTo) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -41,6 +41,8 @@ export async function createRequest(req, res, next) {
     const actor = currentActor(req);
     const request = await PreAuthRequest.create({
       patient,
+      age: age !== undefined && age !== null && age !== "" ? Number(age) : undefined,
+      phone: phone || "",
       insurer,
       procedure,
       priority: priority || "routine",

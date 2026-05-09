@@ -12,6 +12,7 @@ import {
   Person,
   LocalHospital,
   Business,
+  Cake,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import type { PreAuthRequest, RequestStatus, TimelineEvent } from '../types';
@@ -150,6 +151,24 @@ export function RequestDetailsDrawer({
               <div className="flex-1">
                 <div className="text-xs text-gray-500 mb-0.5">Insurer</div>
                 <div className="text-sm font-medium">{request.insurer}</div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Phone sx={{ fontSize: 18, color: '#6b7280' }} />
+              <div className="flex-1">
+                <div className="text-xs text-gray-500 mb-0.5">Phone Number</div>
+                <div className="text-sm font-medium">{request.phone || 'Not specified'}</div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Cake sx={{ fontSize: 18, color: '#6b7280' }} />
+              <div className="flex-1">
+                <div className="text-xs text-gray-500 mb-0.5">Age</div>
+                <div className="text-sm font-medium">
+                  {request.age !== undefined && request.age !== null ? request.age : 'Not specified'}
+                </div>
               </div>
             </div>
 

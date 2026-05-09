@@ -23,6 +23,8 @@ export function NewRequestForm({
 }) {
   const [formData, setFormData] = useState({
     patient: '',
+    age: '',
+    phone: '',
     insurer: '',
     procedure: '',
     priority: 'routine',
@@ -34,6 +36,8 @@ export function NewRequestForm({
     e.preventDefault();
     await onSubmit({
       patient: formData.patient,
+      age: formData.age ? Number(formData.age) : undefined,
+      phone: formData.phone || undefined,
       insurer: formData.insurer,
       procedure: formData.procedure,
       priority: formData.priority as NewRequestPayload['priority'],
@@ -63,6 +67,30 @@ export function NewRequestForm({
           value={formData.patient}
           onChange={(e) => setFormData({ ...formData, patient: e.target.value })}
         />
+
+        <div className="grid grid-cols-2 gap-3">
+          <TextField
+            label="Age"
+            type="number"
+            fullWidth
+            required
+            size="small"
+            value={formData.age}
+            onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+            inputProps={{ min: 0 }}
+          />
+
+          <TextField
+            label="Phone Number"
+            type="tel"
+            fullWidth
+            required
+            size="small"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            placeholder="e.g., +20 10 1234 5678"
+          />
+        </div>
 
         <FormControl fullWidth size="small" required>
           <InputLabel>Insurer</InputLabel>

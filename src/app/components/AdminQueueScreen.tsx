@@ -9,6 +9,7 @@ import {
   FilterList,
   AccessTime,
   Warning,
+  Phone,
 } from '@mui/icons-material';
 import type { PreAuthRequest } from '../types';
 
@@ -183,6 +184,20 @@ export function AdminQueueScreen({
                   <span className="text-gray-400">•</span>
                   <span>{request.assignedTo}</span>
                 </div>
+              </div>
+
+              <div className="mt-2 flex items-center gap-3 text-xs text-gray-500">
+                {request.age !== undefined && request.age !== null && (
+                  <span className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-700">
+                    Age: {request.age}
+                  </span>
+                )}
+                {request.phone && (
+                  <span className="flex items-center gap-1">
+                    <Phone sx={{ fontSize: 12 }} />
+                    {request.phone}
+                  </span>
+                )}
               </div>
 
               {/* Waiting Time - Prominent */}

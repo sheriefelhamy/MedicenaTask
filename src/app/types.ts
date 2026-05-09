@@ -11,6 +11,8 @@ export interface TimelineEvent {
 export interface PreAuthRequest {
   id: string;
   patient: string;
+  age?: number;
+  phone?: string;
   insurer: string;
   procedure: string;
   status: RequestStatus;
@@ -38,6 +40,8 @@ export interface DashboardSummary {
 
 export interface NewRequestPayload {
   patient: string;
+  age?: number;
+  phone?: string;
   insurer: string;
   procedure: string;
   priority: RequestPriority;
