@@ -1,3 +1,4 @@
+import React from 'react';
 import { Drawer, IconButton, Chip, Avatar, Divider, TextField, Button } from '@mui/material';
 import {
   Close,
@@ -77,29 +78,26 @@ export function RequestDetailsDrawer({
       open={open}
       onClose={onClose}
       PaperProps={{
-        sx: { width: '100%', maxWidth: 400 },
+        sx: { width: '100%', maxWidth: 480 },
       }}
     >
       <div className="h-full flex flex-col bg-white">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
           <h2 className="font-semibold text-base">Request Details</h2>
           <IconButton size="small" onClick={onClose}>
             <Close />
           </IconButton>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto">
-          {/* Patient & Status */}
-          <div className="px-4 py-4 bg-gray-50 border-b border-gray-200">
+          <div className="border-b border-slate-200 bg-slate-50 px-4 py-4">
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Person sx={{ fontSize: 18, color: '#6b7280' }} />
                   <h3 className="font-semibold text-lg">{request.patient}</h3>
                 </div>
-                <p className="text-sm text-gray-600">ID: #{request.id.padStart(6, '0')}</p>
+                <p className="text-sm text-slate-600">ID: #{request.id.padStart(6, '0')}</p>
               </div>
               <Chip
                 label={request.status.replace('_', ' ').toUpperCase()}
@@ -136,12 +134,11 @@ export function RequestDetailsDrawer({
             </div>
           </div>
 
-          {/* Details Grid */}
           <div className="px-4 py-4 space-y-3">
             <div className="flex items-start gap-3">
               <LocalHospital sx={{ fontSize: 18, color: '#6b7280' }} />
               <div className="flex-1">
-                <div className="text-xs text-gray-500 mb-0.5">Procedure</div>
+                <div className="text-xs text-slate-500 mb-0.5">Procedure</div>
                 <div className="text-sm font-medium">{request.procedure}</div>
               </div>
             </div>
@@ -149,7 +146,7 @@ export function RequestDetailsDrawer({
             <div className="flex items-start gap-3">
               <Business sx={{ fontSize: 18, color: '#6b7280' }} />
               <div className="flex-1">
-                <div className="text-xs text-gray-500 mb-0.5">Insurer</div>
+                <div className="text-xs text-slate-500 mb-0.5">Insurer</div>
                 <div className="text-sm font-medium">{request.insurer}</div>
               </div>
             </div>
@@ -157,7 +154,7 @@ export function RequestDetailsDrawer({
             <div className="flex items-start gap-3">
               <Phone sx={{ fontSize: 18, color: '#6b7280' }} />
               <div className="flex-1">
-                <div className="text-xs text-gray-500 mb-0.5">Phone Number</div>
+                <div className="text-xs text-slate-500 mb-0.5">Phone Number</div>
                 <div className="text-sm font-medium">{request.phone || 'Not specified'}</div>
               </div>
             </div>
@@ -165,7 +162,7 @@ export function RequestDetailsDrawer({
             <div className="flex items-start gap-3">
               <Cake sx={{ fontSize: 18, color: '#6b7280' }} />
               <div className="flex-1">
-                <div className="text-xs text-gray-500 mb-0.5">Age</div>
+                <div className="text-xs text-slate-500 mb-0.5">Age</div>
                 <div className="text-sm font-medium">
                   {request.age !== undefined && request.age !== null ? request.age : 'Not specified'}
                 </div>
@@ -175,7 +172,7 @@ export function RequestDetailsDrawer({
             <div className="flex items-start gap-3">
               {getChannelIcon(request.channel)}
               <div className="flex-1">
-                <div className="text-xs text-gray-500 mb-0.5">Contact Channel</div>
+                <div className="text-xs text-slate-500 mb-0.5">Contact Channel</div>
                 <div className="text-sm font-medium">{request.channel || 'Not specified'}</div>
               </div>
             </div>
@@ -183,7 +180,7 @@ export function RequestDetailsDrawer({
             <div className="flex items-start gap-3">
               <Person sx={{ fontSize: 18, color: '#6b7280' }} />
               <div className="flex-1">
-                <div className="text-xs text-gray-500 mb-0.5">Assigned To</div>
+                <div className="text-xs text-slate-500 mb-0.5">Assigned To</div>
                 <div className="flex items-center gap-2">
                   <Avatar sx={{ width: 24, height: 24, fontSize: 12 }}>
                     {request.assignedTo.charAt(0)}
@@ -196,7 +193,7 @@ export function RequestDetailsDrawer({
             <div className="flex items-start gap-3">
               <TrendingUp sx={{ fontSize: 18, color: '#6b7280' }} />
               <div className="flex-1">
-                <div className="text-xs text-gray-500 mb-0.5">Priority</div>
+                <div className="text-xs text-slate-500 mb-0.5">Priority</div>
                 <Chip
                   label={request.priority.toUpperCase()}
                   size="small"
@@ -209,7 +206,6 @@ export function RequestDetailsDrawer({
 
           <Divider />
 
-          {/* Timeline */}
           <div className="px-4 py-4">
             <h4 className="font-semibold text-sm mb-3">Activity Timeline</h4>
             <div className="space-y-3">
@@ -231,7 +227,7 @@ export function RequestDetailsDrawer({
                   </div>
                   <div className="flex-1 pb-3">
                     <div className="text-sm">{event.action}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">
+                    <div className="text-xs text-slate-500 mt-0.5">
                       {event.user} · {new Date(event.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
@@ -242,7 +238,6 @@ export function RequestDetailsDrawer({
 
           <Divider />
 
-          {/* Notes Section */}
           <div className="px-4 py-4">
             <h4 className="font-semibold text-sm mb-2">Add Note</h4>
             <TextField
@@ -270,8 +265,7 @@ export function RequestDetailsDrawer({
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="border-t border-gray-200 px-4 py-3 space-y-2">
+        <div className="border-t border-slate-200 bg-slate-50 px-4 py-3 space-y-2">
           {request.status !== 'escalated' && isBreachingSLA && (
             <Button
               variant="contained"

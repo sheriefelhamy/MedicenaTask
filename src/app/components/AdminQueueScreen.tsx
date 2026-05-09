@@ -1,15 +1,16 @@
+import React from 'react';
 import { useState } from 'react';
 import {
   Card,
   Chip,
-  IconButton,
   TextField,
+  InputAdornment,
 } from '@mui/material';
 import {
-  FilterList,
   AccessTime,
   Warning,
   Phone,
+  Search,
 } from '@mui/icons-material';
 import type { PreAuthRequest } from '../types';
 
@@ -71,90 +72,95 @@ export function AdminQueueScreen({
   });
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between mb-3">
-          <h1 className="font-semibold text-lg">Active Queue</h1>
-          <IconButton size="small">
-            <FilterList />
-          </IconButton>
+    <div className="h-full flex flex-col bg-slate-50">
+      <div className="border-b border-slate-200 bg-white px-4 py-4">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-lg font-semibold text-slate-900">Work Queue</h2>
+          <p className="text-xs text-slate-500">Select a request to review history and update status</p>
         </div>
 
-        {/* Filters */}
         <div className="flex gap-2 overflow-x-auto pb-2">
           <button
             onClick={() => setFilter('all')}
-            className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
               filter === 'all'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             All ({requests.length})
           </button>
           <button
             onClick={() => setFilter('escalated')}
-            className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
               filter === 'escalated'
                 ? 'bg-red-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             Escalated ({requests.filter((r) => r.status === 'escalated').length})
           </button>
           <button
             onClick={() => setFilter('waiting_response')}
-            className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
               filter === 'waiting_response'
                 ? 'bg-orange-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             Waiting ({requests.filter((r) => r.status === 'waiting_response').length})
           </button>
           <button
             onClick={() => setFilter('pending')}
-            className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
               filter === 'pending'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             Pending ({requests.filter((r) => r.status === 'pending').length})
           </button>
         </div>
 
-        {/* Search */}
         <TextField
           size="small"
           fullWidth
-          placeholder="Search patient..."
+          placeholder="Search by patient name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="mt-2"
-          sx={{ backgroundColor: 'white' }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search sx={{ fontSize: 18, color: '#94a3b8' }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ backgroundColor: 'white', borderRadius: 2 }}
         />
       </div>
 
-      {/* Request List */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
+      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
+        {filteredRequests.length === 0 && (
+          <div className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
+            No requests match this filter.
+          </div>
+        )}
         {filteredRequests.map((request) => {
           const breachingSLA = isBreachingSLA(request.waitingMinutes, request.slaMinutes);
           return (
             <Card
               key={request.id}
               onClick={() => onRequestClick(request)}
-              className={`p-3 cursor-pointer transition-all hover:shadow-md ${
+              className={`cursor-pointer p-3 transition-all hover:-translate-y-0.5 hover:shadow-md ${
                 breachingSLA ? 'border-l-4 border-red-500' : ''
               }`}
-              sx={{ borderRadius: 2 }}
+              sx={{ borderRadius: 3, borderColor: '#e2e8f0' }}
             >
-              {/* Priority & Status Row */}
-              <div className="flex items-start justify-between mb-2">
+              <div className="mb-2 flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <div className={`w-2 h-2 rounded-full ${getPriorityColor(request.priority)}`} />
-                  <span className="font-medium text-sm">{request.patient}</span>
+                  <span className="text-sm font-semibold text-slate-800">{request.patient}</span>
                 </div>
                 <Chip
                   label={getStatusLabel(request.status)}
@@ -164,17 +170,15 @@ export function AdminQueueScreen({
                 />
               </div>
 
-              {/* Procedure */}
-              <div className="text-sm text-gray-600 mb-2">{request.procedure}</div>
+              <div className="mb-2 text-sm text-slate-600">{request.procedure}</div>
 
-              {/* Meta Info */}
-              <div className="flex items-center justify-between text-xs text-gray-500">
+              <div className="flex items-center justify-between text-xs text-slate-500">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
-                    <span className="font-medium">{request.insurer}</span>
+                    <span className="font-medium text-slate-700">{request.insurer}</span>
                   </span>
                   {request.channel && (
-                    <span className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600">
+                    <span className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-600">
                       {request.channel}
                     </span>
                   )}
@@ -186,9 +190,9 @@ export function AdminQueueScreen({
                 </div>
               </div>
 
-              <div className="mt-2 flex items-center gap-3 text-xs text-gray-500">
+              <div className="mt-2 flex items-center gap-3 text-xs text-slate-500">
                 {request.age !== undefined && request.age !== null && (
-                  <span className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-700">
+                  <span className="rounded bg-slate-100 px-1.5 py-0.5 text-slate-700">
                     Age: {request.age}
                   </span>
                 )}
@@ -200,21 +204,20 @@ export function AdminQueueScreen({
                 )}
               </div>
 
-              {/* Waiting Time - Prominent */}
               <div
-                className={`mt-3 pt-2 border-t flex items-center justify-between ${
-                  breachingSLA ? 'border-red-200' : 'border-gray-100'
+                className={`mt-3 flex items-center justify-between border-t pt-2 ${
+                  breachingSLA ? 'border-red-200' : 'border-slate-100'
                 }`}
               >
                 <div className="flex items-center gap-1.5">
                   {breachingSLA ? (
                     <Warning sx={{ fontSize: 16, color: '#ef4444' }} />
                   ) : (
-                    <AccessTime sx={{ fontSize: 16, color: '#9ca3af' }} />
+                    <AccessTime sx={{ fontSize: 16, color: '#64748b' }} />
                   )}
                   <span
                     className={`text-sm font-semibold ${
-                      breachingSLA ? 'text-red-600' : 'text-gray-700'
+                      breachingSLA ? 'text-red-600' : 'text-slate-700'
                     }`}
                   >
                     {formatWaitTime(request.waitingMinutes)}

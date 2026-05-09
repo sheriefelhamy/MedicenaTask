@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
-import { BottomNavigation, BottomNavigationAction, Paper, Drawer, Fab } from '@mui/material';
+import React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Drawer, Tabs, Tab, Button } from '@mui/material';
 import {
   Dashboard,
   ViewList,
-  Add,
+  AddCircleOutline,
+  LocalHospital,
+  WarningAmber,
 } from '@mui/icons-material';
 import { AdminQueueScreen } from './components/AdminQueueScreen';
 import { DirectorDashboard } from './components/DirectorDashboard';
@@ -19,12 +22,18 @@ export default function App() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [requests, setRequests] = useState<PreAuthRequest[]>([]);
   const [dashboardSummary, setDashboardSummary] = useState<DashboardSummary | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const refreshAll = async () => {
-    const [requestRows, summary] = await Promise.all([fetchRequests(), fetchDashboardSummary()]);
-    setRequests(requestRows);
-    setDashboardSummary(summary);
-    return requestRows;
+    setRefreshing(true);
+    try {
+      const [requestRows, summary] = await Promise.all([fetchRequests(), fetchDashboardSummary()]);
+      setRequests(requestRows);
+      setDashboardSummary(summary);
+      return requestRows;
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   useEffect(() => {
@@ -61,51 +70,87 @@ export default function App() {
     setSelectedRequest(rows.find((row) => row.id === requestId) || null);
   };
 
+  const queueStats = useMemo(() => {
+    const pending = requests.filter((req) => req.status === 'pending').length;
+    const escalated = requests.filter((req) => req.status === 'escalated').length;
+    const breached = requests.filter((req) => req.waitingMinutes > req.slaMinutes).length;
+    return { pending, escalated, breached };
+  }, [requests]);
+
   return (
-    <div className="size-full flex flex-col bg-gray-50">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-4 shadow-md">
-        <h1 className="font-bold text-lg">Medicena Pre-Auth</h1>
-        <p className="text-xs text-blue-100 mt-0.5">Command Center</p>
+    <div className="size-full flex flex-col bg-slate-50">
+      <div className="border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 lg:px-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2 text-slate-500">
+                <LocalHospital sx={{ fontSize: 18 }} />
+                <span className="text-xs font-semibold uppercase tracking-wide">Medicena</span>
+              </div>
+              <h1 className="mt-1 text-2xl font-semibold text-slate-900">Pre-Authorization Command Center</h1>
+              <p className="text-sm text-slate-600">
+                Built for insurance coordinators handling high-volume requests in private hospitals.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outlined"
+                disabled={refreshing}
+                onClick={() => {
+                  refreshAll().catch((error) => console.error(error));
+                }}
+              >
+                {refreshing ? 'Refreshing...' : 'Refresh'}
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<AddCircleOutline />}
+                onClick={() => setShowNewRequest(true)}
+              >
+                New Request
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid gap-2 text-sm sm:grid-cols-3">
+            <div className="rounded-xl border border-slate-200 bg-white px-3 py-2">
+              <p className="text-slate-500">Pending approvals</p>
+              <p className="text-lg font-semibold text-slate-800">{queueStats.pending}</p>
+            </div>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2">
+              <p className="text-amber-700">SLA breaches</p>
+              <p className="text-lg font-semibold text-amber-900">{queueStats.breached}</p>
+            </div>
+            <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2">
+              <p className="text-rose-700">Escalated</p>
+              <p className="flex items-center gap-1 text-lg font-semibold text-rose-900">
+                <WarningAmber sx={{ fontSize: 18 }} />
+                {queueStats.escalated}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-hidden">
-        {activeTab === 0 && <AdminQueueScreen onRequestClick={handleRequestClick} requests={requests} />}
-        {activeTab === 1 && <DirectorDashboard summary={dashboardSummary} />}
-      </div>
-
-      {/* FAB for New Request */}
-      {activeTab === 0 && (
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={() => setShowNewRequest(true)}
-          sx={{
-            position: 'fixed',
-            bottom: 80,
-            right: 16,
-          }}
-        >
-          <Add />
-        </Fab>
-      )}
-
-      {/* Bottom Navigation */}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation
-          showLabels
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden px-4 pb-4 pt-3 lg:px-6">
+        <Tabs
           value={activeTab}
-          onChange={(event, newValue) => {
-            setActiveTab(newValue);
+          onChange={(_, newValue) => setActiveTab(newValue)}
+          sx={{
+            borderBottom: '1px solid #e2e8f0',
+            mb: 2,
+            '& .MuiTab-root': { textTransform: 'none', fontWeight: 600, minHeight: 44 },
           }}
         >
-          <BottomNavigationAction label="Queue" icon={<ViewList />} />
-          <BottomNavigationAction label="Dashboard" icon={<Dashboard />} />
-        </BottomNavigation>
-      </Paper>
+          <Tab icon={<ViewList />} iconPosition="start" label="Active Queue" />
+          <Tab icon={<Dashboard />} iconPosition="start" label="Operations Dashboard" />
+        </Tabs>
 
-      {/* Request Details Drawer */}
+        <div className="flex-1 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          {activeTab === 0 && <AdminQueueScreen onRequestClick={handleRequestClick} requests={requests} />}
+          {activeTab === 1 && <DirectorDashboard summary={dashboardSummary} />}
+        </div>
+      </div>
       <RequestDetailsDrawer
         open={detailsOpen}
         onClose={() => setDetailsOpen(false)}
@@ -116,7 +161,6 @@ export default function App() {
         onAddNote={handleAddNote}
       />
 
-      {/* New Request Drawer */}
       <Drawer
         anchor="bottom"
         open={showNewRequest}
