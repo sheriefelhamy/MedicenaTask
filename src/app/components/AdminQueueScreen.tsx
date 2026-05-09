@@ -82,40 +82,40 @@ export function AdminQueueScreen({
         <div className="flex gap-2 overflow-x-auto pb-2">
           <button
             onClick={() => setFilter('all')}
-            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 ${
               filter === 'all'
-                ? 'bg-blue-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:-translate-y-px'
             }`}
           >
             All ({requests.length})
           </button>
           <button
             onClick={() => setFilter('escalated')}
-            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 ${
               filter === 'escalated'
-                ? 'bg-red-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:-translate-y-px'
             }`}
           >
             Escalated ({requests.filter((r) => r.status === 'escalated').length})
           </button>
           <button
             onClick={() => setFilter('waiting_response')}
-            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 ${
               filter === 'waiting_response'
-                ? 'bg-orange-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                ? 'bg-orange-600 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:-translate-y-px'
             }`}
           >
             Waiting ({requests.filter((r) => r.status === 'waiting_response').length})
           </button>
           <button
             onClick={() => setFilter('pending')}
-            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 ${
               filter === 'pending'
-                ? 'bg-blue-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:-translate-y-px'
             }`}
           >
             Pending ({requests.filter((r) => r.status === 'pending').length})
@@ -152,10 +152,13 @@ export function AdminQueueScreen({
             <Card
               key={request.id}
               onClick={() => onRequestClick(request)}
-              className={`cursor-pointer p-3 transition-all hover:-translate-y-0.5 hover:shadow-md ${
-                breachingSLA ? 'border-l-4 border-red-500' : ''
-              }`}
-              sx={{ borderRadius: 3, borderColor: '#e2e8f0' }}
+              className="min-h-[176px] cursor-pointer border-l-4 p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
+              sx={{
+                borderRadius: 3,
+                border: '1px solid #e2e8f0',
+                borderLeftWidth: 4,
+                borderLeftColor: breachingSLA ? '#ef4444' : '#94a3b8',
+              }}
             >
               <div className="mb-2 flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
