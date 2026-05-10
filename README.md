@@ -104,7 +104,34 @@ Explicitly Out of Scope
 Contents
 ========
 
-SectionDescription[1\. Discovery & Framing](https://chatgpt.com/c/69ff691e-aa4c-83ea-9900-af509eaec210#1-discovery--framing)User research, JTBD, wedge rationale[2\. Solution Outline](https://chatgpt.com/c/69ff691e-aa4c-83ea-9900-af509eaec210#2-solution-outline)MLP definition, workflow, key screens[3\. Prototype](https://chatgpt.com/c/69ff691e-aa4c-83ea-9900-af509eaec210#3-prototype)Clickable prototype and walkthrough[4\. Measurement Plan](https://chatgpt.com/c/69ff691e-aa4c-83ea-9900-af509eaec210#4-measurement-plan)Metrics, instrumentation, success thresholds[5\. Walkthrough Video](https://chatgpt.com/c/69ff691e-aa4c-83ea-9900-af509eaec210#5-walkthrough-video)Recorded submission walkthrough
+**Context**
+
+- [The Problem](#the-problem)
+- [The Wedge](#the-wedge)
+  - [In Scope](#in-scope)
+  - [Explicitly Out of Scope](#explicitly-out-of-scope)
+
+**Take-home**
+
+- [1. Discovery & Framing](#1-discovery-framing)
+  - [Primary User](#primary-user)
+  - [Job-to-be-done](#job-to-be-done)
+  - [Core Insight](#core-insight)
+  - [Key Risk](#key-risk)
+- [2. Solution Outline](#2-solution-outline)
+  - [Minimum Lovable Product](#minimum-lovable-product)
+  - [High-Level User Flow](#high-level-user-flow)
+  - [Key Screens](#key-screens)
+  - [Commercial Context](#commercial-context)
+- [3. Prototype](#3-prototype)
+  - [Live Prototype](#live-prototype)
+  - [Built With](#built-with)
+- [4. Measurement Plan](#4-measurement-plan)
+  - [Metrics](#metrics)
+  - [What Failure Looks Like](#what-failure-looks-like)
+- [5. Walkthrough Video](#5-walkthrough-video)
+  - [Covers](#covers)
+
 
 1\. Discovery & Framing
 =======================
@@ -261,29 +288,26 @@ The pricing model is intended to be a lightweight monthly SaaS subscription per 
 3\. Prototype
 =============
 
-Deliverables
-------------
+Live Prototype
+--------------
 
-*   Discovery & Framing Memo[https://drive.google.com/file/d/14R3sAkTcQitLvLKGgtWCXb90AzaD3OCO/view?usp=sharing](https://drive.google.com/file/d/14R3sAkTcQitLvLKGgtWCXb90AzaD3OCO/view?usp=sharing)
+[https://medicena-task.vercel.app/](https://medicena-task.vercel.app/)
+
+The prototype demonstrates the core operational workflow for insurance pre-authorizations:
+
+*   request intake,
     
-*   Solution Outline[https://drive.google.com/file/d/1va0xockCzJjo7m7XJkFDMicbz0RgkzRg/view?usp=sharing](https://drive.google.com/file/d/1va0xockCzJjo7m7XJkFDMicbz0RgkzRg/view?usp=sharing)
+*   live queue management,
     
-*   Measurement Plan[https://drive.google.com/file/d/1eRWxrz2E9N4X5tJhnB-Xftre61PSEdqB/view?usp=sharing](https://drive.google.com/file/d/1eRWxrz2E9N4X5tJhnB-Xftre61PSEdqB/view?usp=sharing)
+*   SLA risk visibility,
+    
+*   escalation handling,
+    
+*   and director-level operational monitoring.
     
 
-What the Prototype Demonstrates
--------------------------------
+The experience is intentionally lightweight and operationally focused rather than attempting to simulate a full hospital system.
 
-*   Live operational queue management
-    
-*   Request tracking and escalation
-    
-*   Timeline-based coordination workflow
-    
-*   Director-level operational visibility
-    
-*   SLA risk awareness and bottleneck surfacing
-    
 
 Built With
 ----------
@@ -292,7 +316,6 @@ Built With
     
 *   LLM drafting support
     
-*   React prototype implementation
     
 
 AI tools were used to:
